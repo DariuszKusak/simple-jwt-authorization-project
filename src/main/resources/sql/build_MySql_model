@@ -1,0 +1,60 @@
+-- ADMIN : admin123 : $2a$10$lidSs/rGdUxClzmkLNiUiuXEevruiOrfiN00te9rynlPM92akzA/W
+-- MANAGER : manager123 : $2a$10$NwdfbFJVwiTcZf2aHL2DTesiBQh.w9u1kZiboeY2acdUe/U0wCyte
+-- COMMON_USER : commonUser123 : $2a$10$S4yP9l.w4Z66dbgcH8YMgupZN95MmEKxj/FCyWrD2j2VK4fcfM.dy
+-- ALL_USER : allUser123 : $2a$10$IBoe5t4RKQfcVyYCdHh0l.epZpDep1Odo11XlFn3XrRFoSPeTrznu
+
+CREATE TABLE IF NOT EXISTS `permission` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(255) DEFAULT NULL,
+  `full_name` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `account_non_expired` bit(1) DEFAULT NULL,
+  `account_non_locked` bit(1) DEFAULT NULL,
+  `credentials_non_expired` bit(1) DEFAULT NULL,
+  `enabled` bit(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_user_name` (`user_name`)
+) ENGINE=InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS `user_permission` (
+  `id_user` bigint(20) NOT NULL,
+  `id_permission` bigint(20) NOT NULL,
+  PRIMARY KEY (`id_user`,`id_permission`),
+  KEY `fk_user_permission_permission` (`id_permission`),
+  CONSTRAINT `fk_user_permission` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`),
+  CONSTRAINT `fk_user_permission_permission` FOREIGN KEY (`id_permission`) REFERENCES `permission` (`id`)
+) ENGINE=InnoDB;
+
+INSERT INTO `permission` (`description`) VALUES
+	('ADMIN'),
+	('MANAGER'),
+	('COMMON_USER');
+
+insert into users(user_name, full_name, password, account_non_expired, account_non_locked, credentials_non_expired, enabled)
+values ('ADMIN', 'ADMIN', '$2a$10$lidSs/rGdUxClzmkLNiUiuXEevruiOrfiN00te9rynlPM92akzA/W', 1, 1, 1, 1);
+
+insert into users(user_name, full_name, password, account_non_expired, account_non_locked, credentials_non_expired, enabled)
+values ('MANAGER', 'MANAGER', '$2a$10$NwdfbFJVwiTcZf2aHL2DTesiBQh.w9u1kZiboeY2acdUe/U0wCyte', 1, 1, 1, 1);
+
+insert into users(user_name, full_name, password, account_non_expired, account_non_locked, credentials_non_expired, enabled)
+values ('COMMON_USER', 'COMMON_USER', '$2a$10$S4yP9l.w4Z66dbgcH8YMgupZN95MmEKxj/FCyWrD2j2VK4fcfM.dy', 1, 1, 1, 1);
+
+insert into users(user_name, full_name, password, account_non_expired, account_non_locked, credentials_non_expired, enabled)
+values ('ALL_USER', 'ALL_USER', '$2a$10$IBoe5t4RKQfcVyYCdHh0l.epZpDep1Odo11XlFn3XrRFoSPeTrznu', 1, 1, 1, 1);
+
+insert into user_permission(id_user, id_permission) values (1, 1);
+
+insert into user_permission(id_user, id_permission) values (2, 2);
+
+insert into user_permission(id_user, id_permission) values (3, 3);
+
+insert into user_permission(id_user, id_permission) values (4, 1);
+insert into user_permission(id_user, id_permission) values (4, 2);
+insert into user_permission(id_user, id_permission) values (4, 3);
